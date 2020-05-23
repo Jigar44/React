@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
                         <CardBody>
                             <CardTitle>{dish.name}</CardTitle>
                             <CardText>{dish.description}</CardText>
-                        </CardBody>``
+                        </CardBody>
                     </Card>
                 </div>
             )
@@ -26,21 +26,21 @@ import { Link } from 'react-router-dom';
         }
     }
 
-    function RenderComments({comments}) {
+    function RenderComments({comments, addComment, dishId}) {
         if (comments == null) {
             return (<div></div>)
         }
-        const cmnts = comments.map(comment => {
+        const cmnts = comments.map(com => {
             return (
-                <li key={comment.id}>
-                    <p>{comment.comment}</p>
-                    <p>-- {comment.author},
+                <li key={com.id}>
+                    <p>{com.comment}</p>
+                    <p>-- {com.author},
                     &nbsp;
                     {new Intl.DateTimeFormat('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: '2-digit'
-                        }).format(new Date(comment.date))}
+                        }).format(new Date(com.date))}
                     </p>
                 </li>
             )
@@ -51,7 +51,7 @@ import { Link } from 'react-router-dom';
                 <ul className='list-unstyled'>
                     {cmnts}
                 </ul>
-                <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
             
         )
@@ -77,7 +77,10 @@ import { Link } from 'react-router-dom';
                 </div>
                 <div className="row">
                     <RenderDish dish={props.dish} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
                 </div>
                 </div>
             );
@@ -95,21 +98,27 @@ import { Link } from 'react-router-dom';
         
             this.state = {
                 author: '',
-                message: '',
+                comment: '',
                 touched: {
-                    message: false,
+                    comment: '',
                     author: '',
                 },
                 isModalOpen: false
             }
             this.toggleModal = this.toggleModal.bind(this);
             this.handleBlur = this.handleBlur.bind(this);
+            this.handleSubmit = this.handleSubmit.bind(this);
           }
     
         handleBlur = (field) => (evt) => {
             this.setState({
                 touched: { ...this.state.touched, [field]: true }
             });
+        }
+
+        handleSubmit(values) {
+            this.toggleModal();
+            this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
         }
 
           toggleModal() {
@@ -173,8 +182,8 @@ import { Link } from 'react-router-dom';
                                          />
                                     </Row>
                                     <Row className="form-group m-2">
-                                        <Label htmlFor="message">Comment</Label>
-                                        <Control.textarea model=".message" id="message" name="message"
+                                        <Label htmlFor="comment">Comment</Label>
+                                        <Control.textarea model=".comment" id="comment" name="comment"
                                                 rows="7"
                                                 className="form-control" />
                                     </Row>
