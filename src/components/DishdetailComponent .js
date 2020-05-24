@@ -172,7 +172,7 @@ import { Loading } from './LoadingComponent';
                     <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                         <ModalHeader isOpen={this.state.isModalOpen} toggle={this.toggleModal}>Submit Comment</ModalHeader>
                             <ModalBody>
-                                <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                                <LocalForm  onSubmit={(values) => this.handleSubmit(values)}>
                                     <Row className="form-group m-2">
                                         <Label htmlFor="rating">Rating</Label>
                                         <Control.select model=".rating" name="rating"
