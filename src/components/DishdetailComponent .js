@@ -65,7 +65,6 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
                 </ul>
                 <CommentForm dishId={dishId} postComment={postComment} />
             </div>
-            
         )
     }
 
